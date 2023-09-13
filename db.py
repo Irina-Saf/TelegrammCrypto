@@ -5,13 +5,20 @@ from sqlalchemy.orm import sessionmaker
 # строка подключения
 # PostgreSQL_database = "postgresql://user:password@localhost:5433/database"
 # PostgreSQL_database = "postgresql://postgres:12345Ok12345@localhost:5433/postgres"
-PostgreSQL_database = "postgresql://postgres:12345Ok12345@localhost:5433/CryptoProd"
+PostgreSQL_database = "postgresql://postgres:12345Ok12345@localhost:5432/CryptoProd"
 
 
 # создаем движок SqlAlchemy
 engine = create_engine(PostgreSQL_database)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 # import psycopg2
 
