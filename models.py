@@ -10,15 +10,15 @@ class Base(DeclarativeBase):
     pass
 
 
-class User(Base):
-    __tablename__ = "User"
+class Tg_User(Base):
+    __tablename__ = "Tg_User"
 
     id = Column(Integer, primary_key=True, index=True, unique=True)
     first_name = Column(String(25), nullable=False)
     last_name = Column(String(25), nullable=True)
-    username = Column(String(25), nullable=False)
+    username = Column(String(30), nullable=False)
     telegram_id = Column(Integer, unique=True)
-    language_code = Column(String(5), nullable=False)
+    phone_number = Column(Integer, nullable=True)
     is_premium = Column(Boolean, default=False)
     # added_to_attachment_menu=None,
     # can_join_groups=None,
@@ -26,4 +26,4 @@ class User(Base):
     # supports_inline_queries=None)")
 
 
-users = User.__table__
+users = Tg_User.__table__

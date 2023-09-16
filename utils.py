@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 # from sqlalchemy.sql import exists
-from models import User
+from models import Tg_User
 # import fastapi
 from db import engine
 
@@ -10,17 +10,17 @@ def create_user(data):
         # serch_user = db.query(User).filter(
         #     User.telegram_id == data.id)
         # serch_user = db.query(serch_user.exists())
-        user_exists = db.query(db.query(User).filter_by(
+        user_exists = db.query(db.query(Tg_User).filter_by(
             telegram_id=data.id).exists()).scalar()
         if user_exists:
             result = f'Пользователь с id {data.id} уже существует'
         else:
-            new_user = User(
+            new_user = Tg_User(
                 first_name=data.first_name,
                 last_name=data.last_name,
                 username=data.username,
                 telegram_id=data.id,
-                language_code=data.language_code,
+                # language_code=data.language_code,
                 is_premium=data.is_premium is not None
             )
             db.add(new_user)
@@ -86,7 +86,7 @@ def create_user(data):
 def delete_all_user():
     with Session(autoflush=False, bind=engine) as db:
 
-        all_users = db.query(User).all()
+        all_users = db.query(Tg_User).all()
         mess_print = f'Было удалено пользователей - [{len(all_users)}]\n'
         for one_user in all_users:
             db.delete(one_user)
