@@ -18,7 +18,6 @@ async def main():
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_router(router)
 
-    
     await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
 
 

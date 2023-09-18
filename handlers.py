@@ -1,13 +1,14 @@
-from aiogram import types, F, Router
+from aiogram import F, Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from utils import create_user, delete_all_user
-import keyboards as kb
+from keyboards import base_kb
+
 
 router = Router()
 
 
-@router.message(Command("start"))
+@router.message(Command("test"))
 async def start_handler(msg: Message):
     await msg.answer("Привет! Я помогу тебе узнать твой ID, просто отправь мне любое сообщение")
 
@@ -21,7 +22,7 @@ async def test_handler(msg: Message):
 @router.message(Command("delete_all_user"))
 async def del_all_user(msg: Message):
     text = delete_all_user()
-    await msg.reply(str(text))
+    await msg.reply(str(text), reply_markup=base_kb(msg))
 
 
 # @router.message(Command("help"))
@@ -29,26 +30,15 @@ async def del_all_user(msg: Message):
 #     await msg.reply("Привет!\nНапиши мне что-нибудь!")
 
 
-@router.message(Command("test"))
-async def test_handler(msg: Message):
-    # text = create_user(msg.from_user)
-    await msg.reply("OLOLOLOL")
-# @router.message() or router.message(Command("help"))
+@router.message(Command("start"))
+async def test2_handler(msg: Message):
+    await msg.reply("Выберите действие:", reply_markup=base_kb(msg))
 
 
-@router.message()
+@router.message(F.contact)
 async def test_handler(msg: Message):
-    kb = [
-        [
-            types.KeyboardButton(text="Кнопка 1"),
-            types.KeyboardButton(text="Кнопка 2")
-        ],
-    ]
-    keyboard = types.ReplyKeyboardMarkup(
-        keyboard=kb,
-        resize_keyboard=True,
-    )
-    await msg.answer("Меню", reply_markup=keyboard)
+    text = create_user(msg)
+    await msg.answer(text, reply_markup=base_kb(msg))
 
 
 @router.message()
